@@ -1,0 +1,4 @@
+build/
+nutellaAgent.egg-info/
+dist/
+__pycache__
