@@ -6,6 +6,7 @@ setup(
     description         = 'for nutella service',
     author              = 'songpie',
     author_email        = 'songmi.ohh@gmail.com',
+    license             = 'MIT'
     install_requires    =  [],
     packages            = find_packages(exclude = []),
     keywords            = ['nutellaAgent'],
