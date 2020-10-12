@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name                = 'nutellaAgent',
-    version             = '0.1',
+    version             = '0.1.3',
     description         = 'for nutella service',
     author              = 'songpie',
     author_email        = 'songmi.ohh@gmail.com',
-    license             = 'MIT'
+    license             = 'MIT',
     install_requires    =  [],
     packages            = find_packages(exclude = []),
     keywords            = ['nutellaAgent'],
