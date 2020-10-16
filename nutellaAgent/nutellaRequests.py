@@ -4,8 +4,7 @@ import json
 
 class Requests(threading.Thread):
 
-    async def requestAction(self, requestDatas):
-        url="http://localhost:7008/producer"
+    async def requestAction(self, requestDatas,url):
         json_string=json.dumps(requestDatas)
         print(json_string)
         headers = {'Content-Type': 'application/json; charset=utf-8'}
