@@ -8,7 +8,7 @@ from .nu_requests import Requests
 class Nutella(threading.Thread):
 
     def __init__(self):
-        self.basic_info = dict() # run의 기본 정보 && 현재 init이 잘 되지 않아서 기본 넣어놓음
+        self.basic_info = dict() # run의 기본 정보
         self.config_info = dict() # run의 configuration 정보
         self.system_info = dict() # run의 system 정보
         self.metrics_info = dict() # run의 지표 정보 (시각화를 위한)
@@ -23,7 +23,8 @@ class Nutella(threading.Thread):
         else:
             self.basic_info["run_name"] = run_name
             self.basic_info["project_key"] = project_key
-            self.basic_info["project_id"] = project_id[0]["projectId"]      
+            self.basic_info["project_id"] = project_id[0]["projectId"]
+            # run_name으로 새로운 run 만드는 api를 위한 거 추가                
     
     def config(self, **config_datas):
         for key, value in config_datas.items():

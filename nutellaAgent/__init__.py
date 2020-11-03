@@ -7,10 +7,8 @@ The most commonly used functions/objects are:
 
 from .nu_sdk import Nutella
 
-from . import nu_hpo as space
-
-from .nu_hpo_utils import hpo
-
-# from .nu_tpe import our_tpe
-
-from . import nu_tpe as our_tpe
+from .nutella_hpo import space
+from .nutella_hpo import our_tpe
+from .nutella_hpo import hpo
+# from .nutella_hpo import Trials
+#from hyperopt import Trials

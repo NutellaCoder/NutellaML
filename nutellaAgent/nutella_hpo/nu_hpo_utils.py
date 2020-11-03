@@ -46,9 +46,36 @@ def lognormal(label, *args, **kwargs):
 def qlognormal(label, *args, **kwargs):
     return hp.qlognormal(label, *args, **kwargs)
 
-
 def hpo(objective, space, algo = tpe.suggest, max_evals = 100):
     best = fmin(objective, space, algo = tpe.suggest, max_evals = 100)
     return best
+
+# def hpo(objective, space, algo = tpe.suggest, max_evals = 100, trials = None, timeout=None,
+#     loss_threshold=None,
+#     rstate=None,
+#     allow_trials_fmin=True,
+#     pass_expr_memo_ctrl=None,
+#     catch_eval_exceptions=False,
+#     verbose=True,
+#     return_argmin=True,
+#     points_to_evaluate=None,
+#     max_queue_len=1,
+#     show_progressbar=True,
+#     early_stop_fn=None,
+#     trials_save_file="",):
+#     best = fmin(objective, space, algo, max_evals, trials, timeout,
+#     loss_threshold,
+#     rstate,
+#     allow_trials_fmin,
+#     pass_expr_memo_ctrl,
+#     catch_eval_exceptions,
+#     verbose,
+#     return_argmin,
+#     points_to_evaluate,
+#     max_queue_len,
+#     show_progressbar,
+#     early_stop_fn,
+#     trials_save_file)
+#     return best
 
 
