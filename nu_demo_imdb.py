@@ -1,4 +1,5 @@
 # nutella로 hyperparameter optimization 데모
+# 수정 중
 
 # 데이터 다운로드
 from keras.datasets import imdb
@@ -30,8 +31,8 @@ space = {'units': hpo.hp.uniform('units1', 64, 1024),
          'dropout': hpo.hp.uniform('dropout1', .25,.75),
          'activation': 'relu',
          'optimizer': hpo.hp.choice('optimizer', ['rmsprop', 'adadelta', 'adam']),
-         'choice': hpo.hp.choice('num_layers', [{'layers':'two'}, {'layers':'three', 'units3': hpo.hp.uniform('units3', 64,1024), 'dropout3': hpo.hp.uniform('dropout3', 0.25, 0.75)}]),
-         'epochs' : 3,
+        #  'choice': hpo.hp.choice('num_layers', [{'layers':'two'}, {'layers':'three', 'units3': hpo.hp.uniform('units3', 64,1024), 'dropout3': hpo.hp.uniform('dropout3', 0.25, 0.75)}]),
+         'epochs' : 1,
          'batch_size' : hpo.hp.choice('batch_size', [128, 512])
 }
 
@@ -48,9 +49,9 @@ def objective(params):
   model.add(layers.Dense(units=params['units'], activation=params['activation']))
   model.add(layers.Dropout(params['dropout']))
 
-  if params['choice']['layers']== 'three':
-        model.add(layers.Dense(units=params['choice']['units3'], activation=params['activation'])) 
-        model.add(layers.Dropout(params['choice']['dropout3'])) 
+  # if params['choice']['layers']== 'three':
+  #       model.add(layers.Dense(units=params['choice']['units3'], activation=params['activation'])) 
+  #       model.add(layers.Dropout(params['choice']['dropout3'])) 
 
   model.add(layers.Dense(1, activation='sigmoid'))
 
