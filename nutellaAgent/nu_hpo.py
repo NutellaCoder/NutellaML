@@ -38,19 +38,23 @@ from hyperopt.fmin import FMinIter
 from hyperopt.fmin import partial
 from hyperopt.fmin import space_eval
 
+from .nu_importance import calculate_importance
 import numpy as np
 import json
 
 def nu_fmin(objective, space, algo, max_evals, trials, rseed=1337, full_model_string=None, notebook_name=None, verbose=True, stack=3, keep_temp=False, data_args=None):
     best = fmin(objective, space, algo=algo, max_evals=max_evals, trials=trials, rstate=np.random.RandomState(rseed), return_argmin=True)
-    # algo, max_evals, space, trial_results, trials_vals, best_loss, best_hp, 
-    all_info_dict = dict()
-    all_info_dict["method"] = algo
-    # all_info_dict["config"] = space
-    all_info_dict["best_result"] = trials.best_trial['result'] 
-    all_info_dict["best_hp"] = best
-    all_info_dict["trial_result"] = trials.results 
-    all_info_dict["trial_hp"] = trials.vals
-    all_info = json.dumps(all_info_dict)
-    asyncio.run(Requests().post_action(request_datas = all_info_dict, url = "http://localhost:7000/admin/sdk/"))
+    importances = calculate_importance(trials)
+    print("importance를 구해보면")
+    print(importances)
+    # 넣을 것 : algo, max_evals, space, trial_results, trials_vals, best_loss, best_hp, 
+    # all_info_dict = dict()
+    # all_info_dict["method"] = algo
+    # # all_info_dict["config"] = space
+    # all_info_dict["best_result"] = trials.best_trial['result'] 
+    # all_info_dict["best_hp"] = best
+    # all_info_dict["trial_result"] = trials.results 
+    # all_info_dict["trial_hp"] = trials.vals
+    # all_info = json.dumps(all_info_dict)
+    # asyncio.run(Requests().post_action(request_datas = all_info_dict, url = "http://localhost:7000/admin/sdk/"))
     return best

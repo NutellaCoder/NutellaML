@@ -79,3 +79,5 @@ def objective(params):
 trials=hpo.Trials()
 best = nu_fmin(objective, space, algo=hpo.tpe.suggest, max_evals=50, trials=trials)
 print(best)
+
+trials.vals

@@ -1,7 +1,10 @@
-# nutella로 hyperopt 튜토리얼 && trials 분석을 위함
+'''
+    nutella로 hyperopt 튜토리얼 && trials 분석을 위함
+'''
 
 from nutellaAgent import hpo
 from nutellaAgent import nu_fmin
+
 # define an objective function
 def objective(args):
     case, val = args
@@ -18,9 +21,8 @@ space = hpo.hp.choice('a',
     ])
 
 # minimize the objective over the space
-
 trials = hpo.Trials()
-best = hpo.nu_fmin(objective, space, algo=hpo.tpe.suggest, max_evals=100, trials=trials)
+best = nu_fmin(objective, space, algo=hpo.tpe.suggest, max_evals=100, trials=trials)
 
 print(best)
 # print(best)
