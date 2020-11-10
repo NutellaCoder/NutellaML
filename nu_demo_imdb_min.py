@@ -1,4 +1,5 @@
 # nutella로 hyperparameter optimization 데모
+# 일단 최소화로 성공시킨 것
 
 # 데이터 다운로드
 from keras.datasets import imdb
@@ -27,11 +28,8 @@ from sklearn.metrics import roc_auc_score
 import sys
 
 space = {'units': hpo.hp.uniform('units1', 64, 1024),
-         'dropout': hpo.hp.uniform('dropout1', .25,.75),
-         'activation': 'relu',
-         'optimizer': hpo.hp.choice('optimizer', ['rmsprop', 'adadelta', 'adam']),
-         'epochs' : 1,
-         'batch_size' : hpo.hp.choice('batch_size', [128, 512])
+         'optimizer': hpo.hp.choice('optimizer', ['rmsprop', 'adam']),
+         'epochs' : 1
 }
 
 def objective(params):
@@ -41,12 +39,8 @@ def objective(params):
   from keras import layers
 
   model = models.Sequential()
-  model.add(layers.Dense(units=params['units'], activation=params['activation'], input_shape=(10000,)))
-  model.add(layers.Dropout(params['dropout']))
-  
-  model.add(layers.Dense(units=params['units'], activation=params['activation']))
-  model.add(layers.Dropout(params['dropout']))
-
+  model.add(layers.Dense(units=params['units'], activation='relu', input_shape=(10000,)))
+  model.add(layers.Dense(units=params['units'], activation='relu'))
   model.add(layers.Dense(1, activation='sigmoid'))
 
   # 컴파일
@@ -55,25 +49,25 @@ def objective(params):
                 metrics=['acc'])
 
   # data 설정
-  x_val = x_train[:5]
-  partial_x_train = x_train[5:10]
-  y_val = y_train[:5]
-  partial_y_train = y_train[5:10]
+  x_val = x_train[:100]
+  partial_x_train = x_train[100:200]
+  y_val = y_train[:100]
+  partial_y_train = y_train[100:200]
 
   # 학습
   history = model.fit(partial_x_train,
                       partial_y_train,
                       epochs=params['epochs'],
-                      batch_size=params['batch_size'],
+                      batch_size=128,
                       validation_data=(x_val, y_val))
   
-  loss, acc = model.evaluate(x_test[:3], y_test[:3])
+  loss, acc = model.evaluate(x_test, y_test)
 
   return {'loss': -acc, 'status': hpo.STATUS_OK}
 
 trials=hpo.Trials()
 best = nu_fmin(objective, space, algo=hpo.tpe.suggest, max_evals=50, trials=trials)
-print("====================hps====================")
+print("&&&&&&hphphp")
 print(trials.vals)
-print("====================best===================")
+print("#########best")
 print(best)

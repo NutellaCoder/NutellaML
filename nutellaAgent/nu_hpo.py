@@ -45,7 +45,7 @@ import json
 def nu_fmin(objective, space, algo, max_evals, trials, rseed=1337, full_model_string=None, notebook_name=None, verbose=True, stack=3, keep_temp=False, data_args=None):
     best = fmin(objective, space, algo=algo, max_evals=max_evals, trials=trials, rstate=np.random.RandomState(rseed), return_argmin=True)
     importances = calculate_importance(trials)
-    print("importance를 구해보면")
+    print("====================importance====================")
     print(importances)
     # 넣을 것 : algo, max_evals, space, trial_results, trials_vals, best_loss, best_hp, 
     # all_info_dict = dict()

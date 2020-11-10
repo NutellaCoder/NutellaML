@@ -10,14 +10,14 @@ def __make_datas(trials):
     hps_list = list(hps.keys())
 
     features = []
-    for i in range(len(trials.tids)):
+    for i in range(len(hps[hps_list[0]])):
         tmp =[]
         for j in range(len(hps_list)):
             tmp.append(hps[hps_list[j]][i])
         features.append(tmp)
 
     columns_list = []
-    for i in range(len(hps_list)):
+    for i in range(len(hps)):
         columns_list.append(str(i))
     df_x = pd.DataFrame(features, columns=columns_list)
 
