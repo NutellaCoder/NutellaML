@@ -1,4 +1,4 @@
-from hyperopt import hp, fmin, tpe, space_eval
+from hyperopt import hp, fmin, tpe, space_eval, Trials
 
 def hpchoice(label, p_options):
     return hp.pchoice(label, p_options)
@@ -47,9 +47,12 @@ def qlognormal(label, *args, **kwargs):
     return hp.qlognormal(label, *args, **kwargs)
 
 def hpo(objective, space, algo = tpe.suggest, max_evals = 100):
-    best = fmin(objective, space, algo = tpe.suggest, max_evals = 100)
+    best = fmin(objective, space, algo, max_evals)
     return best
 
     
+# def hpo(objective, space, algo = tpe.suggest, max_evals = 100, trials = Trials()):
+#     best = fmin(objective, space, algo = tpe.suggest, max_evals = 100, trials = Trials())
+#     return best
 
 

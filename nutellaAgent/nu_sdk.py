@@ -17,7 +17,7 @@ class Nutella(threading.Thread):
 
 
     def init(self, run_name = None, project_key = None, reinit = False):
-        project_id = asyncio.run(Requests().get_action(parameter = project_key, url = self.request_url))
+        project_id, run_id = asyncio.run(Requests().get_action(parameter1 = project_key, parameter2 = run_name, url = self.request_url))
         if not project_id:
             print("Error! The project doesn't exist")
         else:
@@ -26,10 +26,10 @@ class Nutella(threading.Thread):
             self.basic_info["project_id"] = project_id[0]["projectId"]
             # run_name으로 새로운 run 만드는 api를 위한 거 추가                
     
-    def config(self, **config_datas):
-        for key, value in config_datas.items():
-            self.config_info[key] = value
-        asyncio.run(Requests().post_action(request_datas = self.config_info, url = self.request_url))
+    # def config(self, **config_datas):
+    #     for key, value in config_datas.items():
+    #         self.config_info[key] = value
+    #     asyncio.run(Requests().post_action(request_datas = self.config_info, url = self.request_url))
 
     def log(self, **metrics_datas):
         self.metrics_info["run_name"] = self.basic_info["run_name"]
