@@ -66,11 +66,11 @@ print(best)
 
 ## More Examples
 
-tutorials에서 확인할 수 있다.
+[tutorials](https://github.com/NutellaCoder/NutellaML/tree/master/tutorials)에서 확인할 수 있다.
 
-<!-- 
+
 ## License
 
-Copyright © [song-o](https://github.com/song-o)
+Copyright © [NutellaCoder](https://github.com/NutellaCoder)
 
-[AquVitae](https://github.com/aqvitae/aquvitae) is open-sourced software licensed under the [MIT License](https://github.com/aquvitae/aquvitae/blob/master/LICENSE). -->
+[nutellaAgent](https://github.com/NutellaCoder/NutellaML) is open-sourced software licensed under the [MIT License](https://github.com/NutellaCoder/NutellaML/blob/master/LICENSE).
