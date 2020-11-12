@@ -1,10 +1,9 @@
 ![PyPI Depend](https://img.shields.io/badge/PyPI-v0.1.20-orange) ![Python Depend](https://img.shields.io/badge/Python-3.7-blue) ![License Badge](https://img.shields.io/badge/license-MIT-green)<br>
 
 <p align="center">
-  <img width="400" src="./assets/tmp.jpg">
+  <img width="400" src="./assets/logo.jpeg">
 </p>
 
-<h1 align=center>Nutella</h1>
 
 <h2 align=center>NutellaAgent: Hyperparameter Optimization and Visualization of ML Metrics</h2>
 
@@ -18,9 +17,6 @@ $ pip install nutellaAgent
 ```
 
 ## Visualization
-
-[![TF Tutorial Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aquvitae/aquvitae/blob/master/tutorials/BasicTutorialForTensorFlow.ipynb)
-<!-- 링크 수정 필요 -->
 
 [Netella Web](http://ec2-54-180-180-142.ap-northeast-2.compute.amazonaws.com:3000/)에서 로그인을 하고 프로젝트를 생성한 뒤에 어디서든 자신의 모델을 실행시켜 원하는 지표를 시각화할 수 있다.
 
@@ -41,10 +37,7 @@ first_model.log(accuracy = acc, loss = loss)
 ```
 
 
-## Visualization
-
-[![TF Tutorial Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aquvitae/aquvitae/blob/master/tutorials/BasicTutorialForTensorFlow.ipynb)
-<!-- 링크 수정 필요 -->
+## Hyperparameter Optimization
 
 [Netella Web](http://ec2-54-180-180-142.ap-northeast-2.compute.amazonaws.com:3000/)에서 HPO 프로젝트를 생성한 뒤에 최적화된 하이퍼파라미터 값을 얻을 수 있으며, 웹 페이지를 통해 각 하이퍼파라미터들이 output에 영향을 미치는 정도를 한눈에 파악할 수 있다.
 
@@ -73,7 +66,7 @@ print(best)
 
 ## More Examples
 
-tutorials(link)에서 확인할 수 있다.
+tutorials에서 확인할 수 있다.
 
 <!-- 
 ## License
