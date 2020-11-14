@@ -15,7 +15,6 @@ class Nutella(threading.Thread):
         self.psValue = psutil.Process()
         self.request_url = "http://localhost:7000/admin/sdk"
 
-
     def init(self, run_name = None, project_key = None, reinit = False):
         results = asyncio.run(Requests().get_action(parameter1 = project_key, parameter2 = run_name, url = self.request_url))
 

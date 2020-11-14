@@ -41,6 +41,10 @@ from hyperopt.fmin import space_eval
 from .nu_importance import calculate_importance
 import numpy as np
 import json
+import asyncio
+from .nu_requests import Requests
+
+hpo_url = "http://localhost:7000/admin/sdk/hpo"
 
 def nu_fmin(objective, space, algo, max_evals, trials, rseed=1337, full_model_string=None, notebook_name=None, verbose=True, stack=3, keep_temp=False, data_args=None):
     best = fmin(objective, space, algo=algo, max_evals=max_evals, trials=trials, rstate=np.random.RandomState(rseed), return_argmin=True)
@@ -56,5 +60,49 @@ def nu_fmin(objective, space, algo, max_evals, trials, rseed=1337, full_model_st
     # all_info_dict["trial_result"] = trials.results 
     # all_info_dict["trial_hp"] = trials.vals
     # all_info = json.dumps(all_info_dict)
-    # asyncio.run(Requests().post_action(request_datas = all_info_dict, url = "http://localhost:7000/admin/sdk/"))
+    # asyncio.run(Requests().post_action(request_datas = all_info_dict, url = "http://localhost:7000/admin//sdk/hpo"))
     return best
+
+# 웹에서 설정한 space, algo로 돌리고 max_evals도 추천으로 돌리기. 오직 object 만 넘기면 됨
+def nu_simple_fmin(hpo_project_key, objective, rseed=1337, full_model_string=None, notebook_name=None, verbose=True, stack=3, keep_temp=False, data_args=None):
+    
+    # db에서 가져오기
+    db_info = asyncio.run(Requests().get_action(parameter1 = hpo_project_key, parameter2 = "null", url = hpo_url))[0]
+    hpo_project_id = db_info["hpoProjectId"]
+    algo, space = __transform_db_to_function(method = db_info["method"], config = db_info["config"])
+
+    trials = Trials()
+    best = fmin(objective, space, algo=algo, max_evals=50, trials=trials, rstate=np.random.RandomState(rseed), return_argmin=True)
+    importances = calculate_importance(trials)
+    print("====================importance====================")
+    print(importances)
+ 
+    # 저장 api
+
+    return best, trials
+
+# db에서 꺼낸 method랑 config를 nu_fmin에 넣을 수 있는 형식으로 변환하는 함수
+def __transform_db_to_function(method, config):
+    # 알고리즘 변환
+    algo = 2
+    if method == 0:
+        algo = "random"
+    if method == 1:
+        algo = "grid"
+    if method == 2:
+        algo = tpe.suggest
+
+    # search space 변환
+    space = dict()
+
+    for key, value in json.loads(config).items():
+        for key_in, value_in in value.items():    
+            if str(key_in) == "scope":
+                space[key] = hp.uniform(key, value_in[0], value_in[1])
+            else:
+                space[key] = hp.choice(key, value_in)
+
+    return algo, space
+
+
+    
