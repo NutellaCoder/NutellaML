@@ -26,8 +26,8 @@ from nutellaAgent import nu_fmin
 from sklearn.metrics import roc_auc_score
 import sys
 
-space = {'units': hpo.hp.uniform('units1', 64, 1024),
-         'dropout': hpo.hp.uniform('dropout1', .25,.75),
+space = {'units': hpo.hp.uniform('units', 64, 1024),
+         'dropout': hpo.hp.uniform('dropout', .25,.75),
          'activation': 'relu',
          'optimizer': hpo.hp.choice('optimizer', ['rmsprop', 'adadelta', 'adam']),
          'epochs' : 1,
@@ -55,10 +55,10 @@ def objective(params):
                 metrics=['acc'])
 
   # data 설정
-  x_val = x_train[:5]
-  partial_x_train = x_train[5:10]
-  y_val = y_train[:5]
-  partial_y_train = y_train[5:10]
+  x_val = x_train[:2]
+  partial_x_train = x_train[2:3]
+  y_val = y_train[:2]
+  partial_y_train = y_train[2:3]
 
   # 학습
   history = model.fit(partial_x_train,
@@ -67,12 +67,12 @@ def objective(params):
                       batch_size=params['batch_size'],
                       validation_data=(x_val, y_val))
   
-  loss, acc = model.evaluate(x_test[:3], y_test[:3])
+  loss, acc = model.evaluate(x_test[:1], y_test[:1])
 
   return {'loss': -acc, 'status': hpo.STATUS_OK}
 
 trials=hpo.Trials()
-best = nu_fmin(objective, space, algo=hpo.tpe.suggest, max_evals=50, trials=trials)
+best = nu_fmin("hello", objective, space, algo=hpo.tpe.suggest, max_evals=50, trials=trials)
 print("====================hps====================")
 print(trials.vals)
 print("====================best===================")
