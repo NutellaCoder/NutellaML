@@ -49,9 +49,7 @@ hpo_url = "http://localhost:7000/admin/sdk/hpo"
 def nu_fmin(hpo_project_key, objective, space, algo, max_evals, trials, rseed=1337, full_model_string=None, notebook_name=None, verbose=True, stack=3, keep_temp=False, data_args=None):
         
     best = fmin(objective, space, algo=algo, max_evals=max_evals, trials=trials, rstate=np.random.RandomState(rseed), return_argmin=True)
-    # importances = calculate_importance(trials)
-    # print("====================importance====================")
-    # print(importances)
+    importances = calculate_importance(trials)
 
     all_info = dict()
     
@@ -59,7 +57,6 @@ def nu_fmin(hpo_project_key, objective, space, algo, max_evals, trials, rseed=13
     all_info["best_hp"] = best
     all_info["trial_result"] = trials.results
     all_info["trial_hp"] = trials.vals
-
     # json int64 때문에 작업
     all_info = __to_int(all_info)
     
@@ -68,6 +65,14 @@ def nu_fmin(hpo_project_key, objective, space, algo, max_evals, trials, rseed=13
     method, config = __transform_function_to_db(algo, space)
     all_info["method"] = method
     all_info["config"] = config
+
+    tmp_importance = list()
+    for i in range(len(importances)):
+        for key1, value1 in importances[i].items():
+            for key2, value2 in value1.items(): 
+                tmp_importance.append(value2)
+                break
+    all_info["importances"] = tmp_importance
 
     asyncio.run(Requests().post_action(request_datas = all_info, url = hpo_url))
 
@@ -83,9 +88,7 @@ def nu_simple_fmin(hpo_project_key, objective, rseed=1337, full_model_string=Non
 
     trials = Trials()
     best = fmin(objective, space, algo=algo, max_evals=50, trials=trials, rstate=np.random.RandomState(rseed), return_argmin=True)
-    # importances = calculate_importance(trials)
-    # print("====================importance====================")
-    # print(importances)
+    importances = calculate_importance(trials)
  
     # 저장 api
     all_info = dict()
@@ -94,11 +97,18 @@ def nu_simple_fmin(hpo_project_key, objective, rseed=1337, full_model_string=Non
     all_info["best_hp"] = best
     all_info["trial_result"] = trials.results
     all_info["trial_hp"] = trials.vals
-
     # json int64 때문에 작업
     all_info = __to_int(all_info)
 
     all_info["hpo_project_key"] = hpo_project_key
+
+    tmp_importance = list()
+    for i in range(len(importances)):
+        for key1, value1 in importances[i].items():
+            for key2, value2 in value1.items(): 
+                tmp_importance.append(value2)
+                break
+    all_info["importances"] = tmp_importance
 
     asyncio.run(Requests().post_action(request_datas = all_info, url = hpo_url))
 
