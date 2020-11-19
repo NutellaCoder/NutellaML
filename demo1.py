@@ -31,40 +31,18 @@ history = model.fit(
     reshape_x_train,
     y_train,
     batch_size=128,
-    epochs=10, #50,
+    epochs=5, #50,
     validation_split=.1
 )
 
 # 원하는 지표 생성
 acc = history.history['acc']
-
-# acc = [0.5136481523513794,
-#   0.6917036771774292,
-#   0.7838888764381409,
-#   0.8411852121353149,
-#   0.8750740885734558,
-#   0.8985000252723694,
-#   0.913777768611908,
-#   0.9248703718185425,
-#   0.9307592511177063,
-#   0.9395370483398438]
-
-# loss = [0.5136481523513794,
-#   0.6917036771774292,
-#   0.7838888764381409,
-#   0.8411852121353149,
-#   0.8750740885734558,
-#   0.8985000252723694,
-#   0.913777768611908,
-#   0.9248703718185425,
-#   0.9307592511177063,
-#   0.9395370483398438]
+loss = history.history['loss']
 
 import nutellaAgent
 
 nnn = nutellaAgent.Nutella()
-nnn.init("nu_run", "333", 0)
-# nnn.config(batchSize=125,epoch=30)
-nnn.log(accuracy = acc)
+nnn.init("test_run", "K85zC8arOK7sZeXSiZRF80B7O5-npJkIT5Qhk00O", 0)
+nnn.log(accuracy = acc, loss = loss)
 
 

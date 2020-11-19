@@ -12,6 +12,7 @@ class Nutella(threading.Thread):
         self.config_info = dict() # run의 configuration 정보
         self.system_info = dict() # run의 system 정보
         self.metrics_info = dict() # run의 지표 정보 (시각화를 위한)
+        self.all_info = dict() # 모든 정보
         self.psValue = psutil.Process()
         self.request_url = "http://localhost:7000/admin/sdk"
 
@@ -27,29 +28,35 @@ class Nutella(threading.Thread):
         self.basic_info["project_id"] = project_id            
 
     def log(self, **metrics_datas):
-        self.metrics_info["run_id"] = self.basic_info["run_id"]
-        self.metrics_info["metrics"] = dict()
+        self.all_info["run_id"] = self.basic_info["run_id"]
 
         for key, value in metrics_datas.items():
             if str(type(value)) == "<class 'float'>":
                 for key, value in metrics_datas.items():
-                    self.metrics_info["metrics"][str(key)] = value                  
-                asyncio.run(Requests().post_action(request_datas = self.metrics_info, url = self.request_url))
-
+                    self.metrics_info[str(key)] = value  
+                self.hardware_system_value()
+                self.all_info["metrics"] = self.metrics_info
+                self.all_info["system_info"] = self.system_info                                     
+                asyncio.run(Requests().post_action(request_datas = self.all_info, url = self.request_url)) 
                 break;
             else:
                 for i in range(len(value)):
                     for key, value in metrics_datas.items():
-                        self.metrics_info["metrics"][str(key)] = value[i]
-                    asyncio.run(Requests().post_action(request_datas = self.metrics_info, url = self.request_url))
+                        self.metrics_info[str(key)] = value[i]
+                    self.hardware_system_value()
+                    self.all_info["metrics"] = self.metrics_info
+                    self.all_info["system_info"] = self.system_info 
+                    asyncio.run(Requests().post_action(request_datas = self.all_info, url = self.request_url))
                 break;
 
     def hardware_system_value(self):
         p = psutil.Process()
-        self.system_info["cpu"]=min(65535, int(((p.cpu_percent(interval=None) / 100) / psutil.cpu_count(False)) * 65535))
+
+        self.system_info["cpu"]= min(65535, int(((psutil.cpu_percent(interval=None) / 100) / psutil.cpu_count(False)) * 65535))
         self.system_info["memory"]= min(65535, int((p.memory_percent() / 100) * 65535))
         self.system_info["net"]=psutil.net_io_counters()
         self.system_info["disk"]=psutil.disk_io_counters()
+
 
     def setrequest_url(self, url):
         self.request_url = url
