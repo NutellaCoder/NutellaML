@@ -1,5 +1,3 @@
-# nutella sdk 기본 기능 테스트. (init, log)
-
 # 학습 데이터 설정
 import tensorflow as tf
 import numpy as np
@@ -16,8 +14,8 @@ from tensorflow.keras import layers
 model = Sequential()
 model.add(layers.InputLayer(input_shape=(28, 28, 1)))
 model.add(layers.Flatten())
+model.add(layers.Dense(128, activation='relu'))
 model.add(layers.Dense(64, activation='relu'))
-model.add(layers.Dense(16, activation='relu'))
 model.add(layers.Dense(10, activation='softmax'))
 
 model.compile(
@@ -31,7 +29,7 @@ history = model.fit(
     reshape_x_train,
     y_train,
     batch_size=128,
-    epochs=5, #50,
+    epochs=50,
     validation_split=.1
 )
 
@@ -42,7 +40,7 @@ loss = history.history['loss']
 import nutellaAgent
 
 nnn = nutellaAgent.Nutella()
-nnn.init("test_run", "K85zC8arOK7sZeXSiZRF80B7O5-npJkIT5Qhk00O", 0)
+nnn.init("test_run1", "", 0)
 nnn.log(accuracy = acc, loss = loss)
 
 

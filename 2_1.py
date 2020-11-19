@@ -49,10 +49,10 @@ def objective(params):
                 metrics=['acc'])
 
   # data 설정
-  x_val = x_train[:5]
-  partial_x_train = x_train[5:10]
-  y_val = y_train[:5]
-  partial_y_train = y_train[5:10]
+  x_val = x_train[:10000]
+  partial_x_train = x_train[10000:]
+  y_val = y_train[:10000]
+  partial_y_train = y_train[10000:]
 
   # 학습
   history = model.fit(partial_x_train,
@@ -61,13 +61,9 @@ def objective(params):
                       batch_size=params['batch_size'],
                       validation_data=(x_val, y_val))
   
-  loss, acc = model.evaluate(x_test[:10], y_test[:10])
+  loss, acc = model.evaluate(x_test, y_test)
 
-  return {'loss': -acc, 'status': hpo.STATUS_OK}
+  return {'loss': loss, 'status': hpo.STATUS_OK}
 
 trials=hpo.Trials()
-best = nu_fmin("xgQe1aNnzV-OGeulE0ovCkB3YkP2C1XF5KY1i1kE", objective, space, algo=hpo.tpe.suggest, max_evals=50, trials=trials)
-print("====================hps====================")
-print(trials.vals)
-print("====================best===================")
-print(best)
+best = nu_fmin("", objective, space, algo=hpo.tpe.suggest, max_evals=50, trials=trials)
